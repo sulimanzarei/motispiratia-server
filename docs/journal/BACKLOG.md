@@ -19,7 +19,7 @@ Work through these in order.
 
 - [x] 6. Find what's handing out IP addresses (2026-10-08): it was the C80. DHCP moved to AdGuard ([0002](../decisions/0002-dhcp-on-adguard.md)) and toph got a static lease at .105
   - [ ] Give the C80 the fixed management address .2, and update its firmware (it's from 2022)
-  - [ ] Give the server a fallback DNS server (1.1.1.1) for when AdGuard is down
+  - [x] Give the server a fallback DNS server (1.1.1.1) for when AdGuard is down
 - [ ] 7. Confirm Jellyfin transcodes on the GPU
 
 ### Protect the data
