@@ -13,7 +13,6 @@
 - The whole server described in files in this repo, so it can be rebuilt from scratch.
 - A light, headless system.
 - Backups that are easy to set up and test.
-- No virtual machines needed.
 - Editing in a real editor instead of nano over SSH.
 - Keep: Jellyfin and the *arr apps, Navidrome, AdGuard Home, Homarr, Minecraft (Fabric with mods), Satisfactory.
 
