@@ -1,0 +1,258 @@
+# Snapshot of ~/nexus/docker-compose.yml on 2026-10-07 (CachyOS era).
+# Sanitized: on the server these secrets are written inline. Here they are ${VARIABLES}
+# (names listed in .env.example). Otherwise identical to the live file.
+
+networks:
+  nexus:
+    driver: bridge
+
+services:
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    ports:
+      - "80:80"
+      - "443:443"
+      - "2000:2000"
+      - "7878:7878"
+      - "5055:5055"
+    volumes:
+      - ./config/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./config/caddy/data:/data
+    networks:
+      - nexus
+    restart: unless-stopped
+
+  adguard:
+    container_name: adguard
+    image: adguard/adguardhome:latest
+    restart: unless-stopped
+    network_mode: "host"
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "3030:3000/tcp" # Setup Wizard
+      - "8082:80/tcp"   # Main Web Dashboard
+    volumes:
+      - ./config/adguard/work:/opt/adguardhome/work
+      - ./config/adguard/conf:/opt/adguardhome/conf
+
+  homarr:
+    container_name: homarr
+    image: ghcr.io/homarr-labs/homarr:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/sulimanza/nexus/config/homarr:/appdata
+    environment:
+      - SECRET_ENCRYPTION_KEY=${HOMARR_SECRET_ENCRYPTION_KEY}
+    ports:
+      - "7575:7575"
+    networks:
+      - nexus
+
+  navidrome:
+    image: deluan/navidrome:latest
+    container_name: navidrome
+    user: 1000:1000
+    environment:
+      - ND_SCANSCHEDULE=1h
+      - ND_LOGLEVEL=info
+    volumes:
+      - ./config/navidrome:/data
+      - ./songs:/music:ro
+    networks:
+      - nexus
+    restart: unless-stopped
+
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    volumes:
+      - ./config/jellyfin/server:/config
+      - /mnt/storage/media:/data
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128
+      - /dev/dri/card1:/dev/dri/card1
+    networks:
+      - nexus
+    restart: unless-stopped
+
+  jellyswarrm:
+    image: ghcr.io/llukas22/jellyswarrm:latest
+    container_name: jellyswarrm
+    volumes:
+      - ./config/jellyfin/jellyswarrm:/app/data
+    environment:
+      - JELLYSWARRM_USERNAME=admin
+      - JELLYSWARRM_PASSWORD=${JELLYSWARRM_PASSWORD}
+    networks:
+      - nexus
+    restart: unless-stopped
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr
+    container_name: jellyseerr
+    volumes:
+      - ./config/jellyfin/jellyseerr:/app/config
+    networks:
+      - nexus
+    restart: unless-stopped
+
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Riyadh
+    volumes:
+      - ./config/jellyfin/sonarr:/config
+      - /mnt/storage/media:/data
+    networks:
+      - nexus
+    restart: unless-stopped
+
+  sonarr-anime:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr-anime
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Riyadh
+    volumes:
+      - ./config/jellyfin/sonarr-anime:/config
+      - /mnt/storage/media:/data
+    networks:
+      - nexus
+    restart: unless-stopped
+
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Riyadh
+    volumes:
+      - ./config/jellyfin/radarr:/config
+      - /mnt/storage/media:/data
+    networks:
+      - nexus
+    restart: unless-stopped
+
+  qbittorrent:
+    image: linuxserver/qbittorrent
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Riyadh
+      - WEBUI_PORT=8081
+    volumes:
+      - ./config/jellyfin/downloads:/config
+      - /mnt/storage/media:/data
+    networks:
+      - nexus
+    restart: unless-stopped
+
+  prowlarr:
+    image: linuxserver/prowlarr
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Riyadh
+    volumes:
+      - ./config/jellyfin/prowlarr:/config
+    networks:
+      - nexus
+    restart: unless-stopped
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=info
+      - LOG_HTML=false
+      - CAPTCHA_SOLVER=none
+    networks:
+      - nexus
+    restart: unless-stopped
+
+  vikunja:
+    image: vikunja/vikunja:2.3.0
+    container_name: vikunja
+    environment:
+      VIKUNJA_SERVICE_PUBLICURL: http://notes.motis/
+      VIKUNJA_SERVICE_SECRET: ${VIKUNJA_SERVICE_SECRET}
+      VIKUNJA_DATABASE_HOST: db
+      VIKUNJA_DATABASE_PASSWORD: ${VIKUNJA_DB_PASSWORD}
+      VIKUNJA_DATABASE_TYPE: mysql
+      VIKUNJA_DATABASE_USER: vikunja
+      VIKUNJA_DATABASE_DATABASE: vikunja
+    volumes:
+      - ./config/vikunja/files:/app/vikunja/files
+    networks:
+      - nexus
+      - default
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: mariadb:10
+    container_name: vikunja_db
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: ${VIKUNJA_DB_ROOT_PASSWORD}
+      MYSQL_USER: vikunja
+      MYSQL_PASSWORD: ${VIKUNJA_DB_PASSWORD}
+      MYSQL_DATABASE: vikunja
+    volumes:
+      - ./config/vikunja/db:/var/lib/mysql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u $$MYSQL_USER --password=$$MYSQL_PASSWORD"]
+      interval: 2s
+      start_period: 30s
+
+  speedtest-tracker:
+    image: lscr.io/linuxserver/speedtest-tracker:latest
+    container_name: speedtest-tracker
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Riyadh
+      - APP_KEY=${SPEEDTEST_APP_KEY}
+      - APP_URL=http://speedtest.motis
+      - DB_CONNECTION=sqlite
+      - SPEEDTEST_SCHEDULE=0 */6 * * *
+    volumes:
+      - ./config/speedtest-tracker/config:/config
+      - ./config/speedtest-tracker/keys:/config/keys
+    networks:
+      - nexus
+    restart: unless-stopped
+
+  homarr-iframes:
+    container_name: homarr-iframes
+    image: ghcr.io/diogovalentte/homarr-iframes:latest
+    user: 1000:1000
+    environment:
+      - TZ=Asia/Riyadh
+      - VIKUNJA_ADDRESS=http://notes.motis
+      - INTERNAL_VIKUNJA_ADDRESS=http://vikunja:3456
+      - VIKUNJA_TOKEN=${VIKUNJA_API_TOKEN}
+      - VIKUNJA_BACKGROUND_IMG_URL=https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/vikunja.png
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+    ports:
+      - "9595:8080"
+    networks:
+      - nexus
+    restart: on-failure

@@ -1,0 +1,19 @@
+# Secrets: never commit these
+.env
+*.env
+!*.env.example
+secrets/
+*.key
+*.pem
+
+# Output of the inventory scripts (contains addresses and host details)
+server-report.txt
+server-followup.txt
+
+# OS and editor clutter
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+.vscode/

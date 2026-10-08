@@ -1,0 +1,46 @@
+# Snapshot of ~/nexus/config/caddy/Caddyfile on 2026-10-07 (CachyOS era).
+# The tailnet name is replaced with TAILNET. Otherwise identical to the live file.
+# Routes on :8989, :7879 and :3333 never work: those ports aren't published by the container.
+{
+	auto_https off
+}
+
+http://jellyfin.motis, http://motispiratia.TAILNET.ts.net {
+	reverse_proxy jellyfin:8096
+}
+http://jellyswarrm.motis {
+	reverse_proxy jellyswarrm:3000
+}
+http://sonarr.motis, http://motispiratia.TAILNET.ts.net:8989 {
+	reverse_proxy sonarr:8989
+}
+http://anime.motis {
+	reverse_proxy sonarr-anime:8989
+}
+http://radarr.motis, http://motispiratia.TAILNET.ts.net:7879  {
+	reverse_proxy radarr:7878
+}
+http://qbittorrent.motis, http://motispiratia.TAILNET.ts.net:2000  {
+	reverse_proxy qbittorrent:8081
+}
+http://prowlarr.motis {
+	reverse_proxy prowlarr:9696
+}
+http://requests.motis, http://motispiratia.TAILNET.ts.net:5055 {
+	reverse_proxy jellyseerr:5055
+}
+http://music.motis, http://motispiratia.TAILNET.ts.net:7878 {
+	reverse_proxy navidrome:4533
+}
+http://home.motis {
+	reverse_proxy homarr:7575
+}
+http://docker.motis, http://motispiratia.TAILNET.ts.net:3333 {
+	reverse_proxy docker:3000
+}
+http://notes.motis {
+	reverse_proxy vikunja:3456
+}
+http://speedtest.motis {
+	reverse_proxy speedtest-tracker:80
+}

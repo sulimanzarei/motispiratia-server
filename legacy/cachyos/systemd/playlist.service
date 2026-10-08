@@ -1,0 +1,8 @@
+# /etc/systemd/system/playlist.service (snapshot 2026-10-07)
+[Unit]
+Description=Navidrome Playlist Generator
+
+[Service]
+Type=oneshot
+ExecStart=/home/sulimanza/nexus/auto-playlist.sh
+User=sulimanza

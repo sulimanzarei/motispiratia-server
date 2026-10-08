@@ -1,0 +1,22 @@
+# Snapshot of ~/docker/docker-compose.yml on 2026-10-07 (CachyOS era). No secrets; identical to the live file.
+services:
+  dockhand:
+    image: fnsys/dockhand:latest
+    container_name: docker
+    restart: unless-stopped
+    ports:
+      - "9000:3000" # Keeps your old port 9000 available if you access via local IP
+    volumes:
+      # Gives Dockhand control over the Docker engine
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Stores Dockhand's internal settings
+      - /home/sulimanza/docker/data:/app/data
+      # Mounts your actual stack folders so Dockhand can natively read/edit them
+      - /home/sulimanza/servers:/home/sulimanza/servers
+      - /home/sulimanza/nexus:/home/sulimanza/nexus
+    networks:
+      - nexus_nexus
+
+networks:
+  nexus_nexus:
+    external: true

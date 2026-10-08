@@ -1,0 +1,10 @@
+# /etc/systemd/system/playlist.timer (snapshot 2026-10-07)
+[Unit]
+Description=Run Playlist Script Every 5 Minutes
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=5min
+
+[Install]
+WantedBy=timers.target
