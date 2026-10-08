@@ -35,7 +35,7 @@
 
 ## Decision
 
-AdGuard Home. Pool .150–.250, fixed addresses below .150, 24-hour leases. The Huawei's and the C80's DHCP servers stay off.
+AdGuard Home. Pool .010–.250, 24-hour leases. The Huawei's and the C80's DHCP servers stay off.
 
 ## Consequences
 
