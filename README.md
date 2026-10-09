@@ -1,9 +1,9 @@
 # motispiratia
 
-My home server: a Lenovo ThinkCentre mini PC that runs my media stack, a few web apps, DNS for the house, and game servers for friends. This repo records how it's set up, every change I make, and why. Eventually it will hold the server's entire configuration.
+My home server: a Lenovo ThinkCentre mini PC that runs my media stack, a few web apps, DNS and DHCP for the house, and game servers for friends. This repo records how it's set up, every change I make, and why. Eventually it will hold the server's entire configuration.
 
 > [!NOTE]
-> **Current state:** CachyOS with Docker Compose, documented as of 2026-10-07.
+> **Current state:** CachyOS with Docker Compose. Inventoried on 2026-10-07. Changes since then are tracked in the [backlog](docs/journal/BACKLOG.md).
 > **Decided:** moving to NixOS ([decision record](docs/decisions/0001-nixos-for-motispiratia.md)).
 
 ## At a glance
@@ -79,7 +79,8 @@ motispiratia-server/
 
 ## Conventions
 
-- No secrets in git. Compose secrets go in `.env` files, which are ignored. Commits are scanned with gitleaks.
+- No secrets in git. Config copies use `${VARIABLES}` instead of real values, and `.env` files are ignored.
+- Commits made on toph are scanned with gitleaks before they're created. GitHub's secret scanning and push protection cover the rest.
 - No public IP addresses, Tailscale addresses or tailnet name in this repo.
 - Commit messages follow Conventional Commits (`docs:`, `feat:`, `fix:`).
 - Journal filenames start with an ISO date, e.g. `2026-10-07-phase0-inventory.md`.
