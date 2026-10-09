@@ -1,0 +1,20 @@
+// Friends and family: Jellyfin and game servers only
+{
+	"src": ["autogroup:shared"],
+	"dst": ["*"],
+
+	"ip": [
+		"tcp:80",
+		"tcp:25565",
+		"tcp:7777",
+		"udp:7777",
+		"tcp:8888",
+	],
+}
+
+// My own devices: everything
+{
+	"src": ["autogroup:member"],
+	"dst": ["*"],
+	"ip":  ["*"],
+}
