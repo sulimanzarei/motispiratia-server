@@ -14,7 +14,7 @@
 
 ## DHCP
 
-AdGuard Home on the server hands out addresses for the whole house ([decision 0002](decisions/0002-dhcp-on-adguard.md)). The Huawei's DHCP server is off, and the C80's should be too.
+AdGuard Home on the server hands out addresses for the whole house ([decision 0002](decisions/0002-dhcp-on-adguard.md)). The Huawei's and the C80's DHCP servers are off.
 
 | Setting | Value |
 |---|---|
@@ -27,11 +27,15 @@ AdGuard Home on the server hands out addresses for the whole house ([decision 00
 
 Address plan:
 
-| Addresses | Use |
+| Address | Use |
 |---|---|
 | .1 | Huawei router |
-| .2 – .149 | Fixed addresses: C80 at .2 (planned), server at .100, toph at .105 |
-| .150 – .250 | DHCP pool for everything else, including guests |
+| .2 | C80 (planned fixed address) |
+| .10 – .250 | DHCP pool, including guests |
+| .100 | Server, set by hand, inside the pool |
+| .105 | toph, static lease |
+
+The server's address sits inside the pool, but AdGuard never hands it out. Before offering an address, AdGuard pings it and skips any address that answers (`icmp_timeout_msec`), and the server always answers because AdGuard runs on it. toph's address is reserved by its static lease.
 
 > [!NOTE]
 > **What happened (2026-10-08).** Devices kept getting addresses even though the Huawei's DHCP and AdGuard's DHCP were both off.
@@ -125,7 +129,7 @@ Address plan:
 Reachability:
 
 - **LAN:** every Docker-published port. Native services only where ufw allows them.
-- **Tailnet:** every port.
+- **Tailnet:** every port for my own devices. People I share the server with get only the ports in the [policy](../tailscale/policy.hujson).
 - **Internet over IPv4:** nothing. The router uses NAT and has no port forwards.
 - **Internet over IPv6:** depends on whether the router filters inbound IPv6. Not confirmed yet.
 
@@ -141,7 +145,7 @@ Reachability:
 | 7575/tcp | Homarr | Direct access |
 | 7878/tcp | Caddy → Navidrome | Tailnet shortcut |
 | 8082/tcp | AdGuard Home admin | |
-| 9000/tcp | Dockhand | No login, and it controls Docker |
+| 9000/tcp | Dockhand | Login required (since 2026-10-09). It controls Docker |
 | 9595/tcp | homarr-iframes | |
 | 25565/tcp | Minecraft | |
 | 41641/udp | Tailscale | |
