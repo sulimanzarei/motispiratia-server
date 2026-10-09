@@ -11,13 +11,13 @@ Work through these in order.
 ### Lock down access
 
 - [x] 2. Tailscale policy: people the server is shared with can reach only Jellyfin (80), Minecraft (25565) and Satisfactory (7777, 8888) (2026-10-09)
-- [ ] 3. Dockhand: turn on a login
+- [x] 3. Dockhand: turn on a login (2026-10-09)
 - [ ] 4. SSH: set up a key on toph, then turn off password login
 - [ ] 5. ufw: allow SSH, DNS, the AdGuard admin page and Minecraft from the home network only. Keep DHCP (67/udp) working, since AdGuard now hands out addresses
 
 ### Fill the gaps
 
-- [x] 6. Find what's handing out IP addresses (2026-10-08): it was the C80. DHCP moved to AdGuard ([0002](../decisions/0002-dhcp-on-adguard.md)) and toph got a static lease at .105 (2026-10-08)
+- [x] 6. Find what's handing out IP addresses (2026-10-08): it was the C80. DHCP moved to AdGuard ([0002](../decisions/0002-dhcp-on-adguard.md)) and toph got a static lease at .105
   - [ ] Give the C80 the fixed management address .2, and update its firmware (it's from 2022)
   - [x] Give the server a fallback DNS server (1.1.1.1) for when AdGuard is down (2026-10-08)
 - [ ] 7. Confirm Jellyfin transcodes on the GPU
