@@ -71,7 +71,7 @@ The Homarr dashboard has widgets for:
 | docker | `fnsys/dockhand` | Dockhand, a Docker management UI (`docker.motis`, port 9000) | `~/docker/data`. Mounts the Docker socket, `~/nexus` and `~/servers` |
 
 > [!WARNING]
-> Dockhand and Homarr both mount the Docker socket, and whoever controls the socket controls the server. Dockhand has no login yet.
+> Dockhand and Homarr both mount the Docker socket, and whoever controls the socket controls the server. Dockhand has required a login since 2026-10-09.
 
 ## Game servers
 
