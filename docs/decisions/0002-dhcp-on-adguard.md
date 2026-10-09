@@ -35,11 +35,12 @@
 
 ## Decision
 
-AdGuard Home. Pool .010–.250, 24-hour leases. The Huawei's and the C80's DHCP servers stay off.
+AdGuard Home. Pool .10–.250, 24-hour leases. The Huawei's and the C80's DHCP servers stay off.
 
 ## Consequences
 
 - If the server goes down, devices keep their address until their lease runs out (up to 24 hours), but new devices can't join.
 - Migration day needs a plan for DHCP and DNS: keep the downtime short, or hand DHCP back to the Huawei temporarily.
+- The pool includes the server's own address (.100) and toph's (.105). toph's is reserved by its static lease. AdGuard pings each address before offering it, so it never hands out .100 while it's running.
 - The firewall must keep allowing DHCP (67/udp).
 - Only one DHCP server may run on the network. If the C80 is ever reset, its DHCP server needs turning off again.
