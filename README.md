@@ -57,6 +57,7 @@ Speedtest Tracker and Jellyswarrm also run but are being removed. Full details a
 ```
 motispiratia-server/
 ├── README.md
+├── tailscale/          policy rules for tailscale
 ├── docs/
 │   ├── hardware.md, system.md, network.md, services.md,
 │   │   storage.md, music.md, game-servers.md
