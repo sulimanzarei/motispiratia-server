@@ -7,6 +7,7 @@ Work through these in order.
 ### Save the docs
 
 - [x] 1. Create the GitHub repo (private for now) and push these docs (2026-10-08)
+  - [x] Made the repo public after a full history check (2026-10-09)
 
 ### Lock down access
 
@@ -35,13 +36,13 @@ Work through these in order.
 
 ### Close the phase
 
-- [ ] 13. Write the Phase 1 journal entry, then make the repo public with secret scanning and push protection on
-
+- [ ] 13. Write the Phase 1 journal entry
+      
 ### Optional, any time
 
 - [ ] VS Code with Remote-SSH on toph, to edit server files in a real editor
 - [ ] Minecraft memory: 10 GB → about 6 GB
-- [ ] nixos-setup: scan its history with gitleaks, rename it (e.g. `toph-nixos`) and make it public
+- [x] nixos-setup: scan its history with gitleaks, rename it (e.g. `toph-nixos`) and make it public (2026-10-09)
 
 ### Skipped on CachyOS, because the NixOS reinstall replaces them
 
@@ -57,7 +58,7 @@ Work through these in order.
 - [ ] Pick a secrets tool (sops-nix or agenix)
 - [ ] Automated backups with retention, a second copy off the server, and a tested restore
 - [ ] Build and test the config before touching the server
-- [ ] Plan migration day: DNS fallback for the house, data copy, rollback
+- [ ] Plan migration day: DHCP and DNS for the house while the server is down, data copy, rollback
 
 ## Phase 3: migration
 
