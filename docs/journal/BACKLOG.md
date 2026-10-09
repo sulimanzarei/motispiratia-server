@@ -10,7 +10,7 @@ Work through these in order.
 
 ### Lock down access
 
-- [ ] 2. Tailscale policy: people the server is shared with can reach only Jellyfin (80), Minecraft (25565) and Satisfactory (7777, 8888)
+- [x] 2. Tailscale policy: people the server is shared with can reach only Jellyfin (80), Minecraft (25565) and Satisfactory (7777, 8888)
 - [ ] 3. Dockhand: turn on a login
 - [ ] 4. SSH: set up a key on toph, then turn off password login
 - [ ] 5. ufw: allow SSH, DNS, the AdGuard admin page and Minecraft from the home network only. Keep DHCP (67/udp) working, since AdGuard now hands out addresses
