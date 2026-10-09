@@ -22,7 +22,7 @@ AdGuard Home on the server hands out addresses for the whole house ([decision 00
 | Gateway | 192.168.100.1 |
 | DNS handed out | 192.168.100.100 (AdGuard itself) |
 | Lease | 24 hours |
-| Pool | 192.168.100.150 – .250 (planned. On 2026-10-08 it still started at .10) |
+| Pool | 192.168.100.10 – .250 |
 | Static leases | toph → .105 |
 
 Address plan:
@@ -80,7 +80,7 @@ Address plan:
 | My devices | the server, toph (Windows), MacBook Pro, iPhone, Apple TV |
 | Shared in | One device from a friend's tailnet, offline for months |
 | Shared out | The server, through machine sharing, with friends (Minecraft) and three family members (Jellyfin) |
-| Access policy | The default allow-all policy |
+| Access policy | Shared members can only access ports for game servers and Jellyfin |
 
 > [!IMPORTANT]
 > Machine sharing decides *which device* people can reach. The access policy decides *which ports*. Under allow-all, everyone the server is shared with can reach every port on it, including SSH and Dockhand. The fix, a rule that limits `autogroup:shared` to Jellyfin and Minecraft, is on the [backlog](journal/BACKLOG.md).
