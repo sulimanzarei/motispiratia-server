@@ -63,7 +63,7 @@ Address plan:
 > - devices keep their address until their 24-hour lease runs out, but new devices can't join;
 > - any device whose only DNS server is the server can't resolve names, which looks like "the internet is down".
 >
-> toph's Windows install has 1.1.1.1 as a second DNS server. Other devices have no fallback, and the server itself only uses its own AdGuard.
+> toph's Windows install has 1.1.1.1 as a second DNS server. Other devices have no fallback. The server itself falls back to 1.1.1.1.
 >
 > A second, public DNS server has side effects. Windows switches to it whenever the first one is slow to answer, and while it's using 1.1.1.1, the `.motis` names don't resolve and ads aren't blocked.
 
@@ -80,10 +80,20 @@ Address plan:
 | My devices | the server, toph (Windows), MacBook Pro, iPhone, Apple TV |
 | Shared in | One device from a friend's tailnet, offline for months |
 | Shared out | The server, through machine sharing, with friends (Minecraft) and three family members (Jellyfin) |
-| Access policy | Shared members can only access ports for game servers and Jellyfin |
+| Access policy | My devices reach everything. People I share the server with reach only Jellyfin and the game servers ([policy](../tailscale/policy.hujson)) |
 
 > [!IMPORTANT]
-> Machine sharing decides *which device* people can reach. The access policy decides *which ports*. Under allow-all, everyone the server is shared with can reach every port on it, including SSH and Dockhand. The fix, a rule that limits `autogroup:shared` to Jellyfin and Minecraft, is on the [backlog](journal/BACKLOG.md).
+> Machine sharing decides *which device* people can reach. The access policy decides *which ports* on it.
+>
+> Until 2026-10-09 the policy was Tailscale's default allow-all, so everyone the server was shared with could reach every port on it, including SSH and Dockhand. Now they can reach only:
+>
+> | Port | Service |
+> |---|---|
+> | 80/tcp | Jellyfin, through Caddy |
+> | 25565/tcp | Minecraft |
+> | 7777/tcp, 7777/udp, 8888/tcp | Satisfactory |
+>
+> Shared users reach the server only by its full tailnet name, because they don't get my split DNS. This policy is the only filter for tailnet traffic, since Tailscale accepts it before ufw sees it.
 
 ## Reverse proxy: Caddy
 
