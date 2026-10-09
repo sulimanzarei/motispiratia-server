@@ -57,4 +57,4 @@ Possible backup targets:
 - A spare bay in the D4-320.
 - Cloud storage. At about 50 GB, this should be cheap.
 
-The backup plan is Phase 2. The usual rule of thumb is 3-2-1: three copies, on two different devices, one of them off-site.
+A first manual backup is backlog task 8. Automated backups are part of Phase 2, built into the NixOS config. The usual rule of thumb is 3-2-1: three copies, on two different devices, one of them off-site.
