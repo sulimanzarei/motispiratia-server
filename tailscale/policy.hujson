@@ -1,20 +1,32 @@
-// Friends and family: Jellyfin and game servers only
+// Tailnet policy file: a copy of what's saved in the Tailscale admin console
+// (Access controls). HuJSON: JSON with comments and trailing commas.
+// To restore it, paste this whole file into the console's JSON editor.
 {
-	"src": ["autogroup:shared"],
-	"dst": ["*"],
+	"grants": [
+		// Friends and family: Jellyfin and game servers only
+		{
+			"src": ["autogroup:shared"],
+			"dst": ["*"],
+			"ip": [
+				"tcp:80",    // Jellyfin, through Caddy
+				"tcp:25565", // Minecraft
+				"tcp:7777",  // Satisfactory
+				"udp:7777",  // Satisfactory
+				"tcp:8888",  // Satisfactory
+			],
+		},
 
-	"ip": [
-		"tcp:80",
-		"tcp:25565",
-		"tcp:7777",
-		"udp:7777",
-		"tcp:8888",
+		// My own devices: everything
+		{"src": ["autogroup:member"], "dst": ["*"], "ip": ["*"]},
 	],
-}
 
-// My own devices: everything
-{
-	"src": ["autogroup:member"],
-	"dst": ["*"],
-	"ip":  ["*"],
+	// Tailscale SSH: Tailscale's default rule. I don't use Tailscale SSH.
+	"ssh": [
+		{
+			"action": "check",
+			"src":    ["autogroup:member"],
+			"dst":    ["autogroup:self"],
+			"users":  ["autogroup:nonroot", "root"],
+		},
+	],
 }
