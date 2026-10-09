@@ -69,8 +69,8 @@ ufw is on, with deny incoming, allow outgoing, allow routed. These ports are all
 - The native Caddy package (disabled) with its default `/etc/caddy/Caddyfile`
 - Podman, installed next to Docker
 
-All of these are on the [backlog](journal/BACKLOG.md) for removal.
-
+The [backlog](journal/BACKLOG.md) skips removing these on CachyOS, because the NixOS reinstall replaces all of it.
+  
 ## Scheduled jobs
 
 Only systemd timers run here; cron isn't installed.
@@ -104,4 +104,4 @@ Nothing has been updated since install. On 2026-10-07, `checkupdates` listed 708
 | tailscale | 1.96.4 | 1.102.5 |
 
 > [!NOTE]
-> Rolling-release distros expect frequent, small updates. Catching up five months at once works, but it's riskier: the bootloader, kernel, systemd and glibc all change together. Whether to update now or wait for the NixOS migration is on the backlog.
+> Rolling-release distros expect frequent, small updates. Catching up five months at once works, but it's riskier: the bootloader, kernel, systemd and glibc all change together. The [backlog](journal/BACKLOG.md) skips the catch-up because the NixOS reinstall replaces it, unless the migration slips.
