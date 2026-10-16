@@ -54,6 +54,7 @@ The server's address sits inside the pool, but AdGuard never hands it out. Befor
 ## DNS: AdGuard Home
 
 - Runs in Docker with host networking, so it listens directly on port 53 (TCP and UDP) and serves its admin page on port 8082.
+- Rate limit is off (`ratelimit: 0`). The default of 20 queries a second per client was dropping queries during page loads ([2026-10-16](journal/2026-10-16-adguard-rate-limit.md)). Safe only while DNS is closed to the internet.
 - Upstream: Quad9 over DNS-over-HTTPS (`dns10.quad9.net`), bootstrapped through 9.9.9.10 and 149.112.112.10.
 - Blocklist: the AdGuard DNS filter. An AdAway list is configured but disabled.
 - DNS rewrite: `*.motis` → 192.168.100.100. This is what makes the `.motis` names reach Caddy.
